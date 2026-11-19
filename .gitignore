@@ -1,0 +1,36 @@
+# Local Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor and OS metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local-only material retained outside the GitHub repository
+_local_archive/
+_ext_msra_walk/
+references/
+
+# Generated logs and temporary media
+*.log
+*.tmp
+*.temp
+demo_trim.muted.tmp.mp4
+
+# Keep only the checkpoints used by the documented training path.
+artifacts/*
+!artifacts/mjwarp_stage1_stand/
+!artifacts/mjwarp_walk_stage_1/
+!artifacts/mjwarp_walk_stage_5/
+!artifacts/mjwarp_walk_stage_6/
+!artifacts/mjwarp_walk_stage_7/
+!artifacts/mjwarp_walk_stage_10/
+!artifacts/mjwarp_walk_stage_10_balanced_refine/

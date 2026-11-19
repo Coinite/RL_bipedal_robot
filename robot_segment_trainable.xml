@@ -1,0 +1,158 @@
+<mujoco model="robot_segment_trainable">
+  <!--
+    Trainable articulated model derived from robot_segment_native.xml.
+    The segmented STL meshes preserve the original pose as visual geoms,
+    while primitive/contact meshes and explicit joints make the robot trainable.
+  -->
+  <compiler angle="degree" meshdir="robot_segment" autolimits="true" balanceinertia="true"/>
+  <option timestep="0.003" gravity="0 0 -9.81" integrator="RK4" solver="Newton" iterations="60"/>
+
+  <visual>
+    <headlight ambient="0.55 0.55 0.55" diffuse="0.55 0.55 0.55" specular="0.1 0.1 0.1"/>
+    <rgba haze="0.97 0.98 1.0 1"/>
+  </visual>
+
+  <default>
+    <joint limited="true" damping="1.5" armature="0.02"/>
+    <geom friction="1.6 0.1 0.03" solimp="0.95 0.99 0.001" solref="0.004 1"/>
+    <motor ctrllimited="true"/>
+
+    <default class="visual_mesh">
+      <geom type="mesh" contype="0" conaffinity="0" group="2" rgba="0.85 0.85 0.90 1"/>
+    </default>
+
+    <default class="collision_mesh">
+      <geom type="mesh" group="3" rgba="0.15 0.75 0.25 0.20"/>
+    </default>
+
+    <default class="collision_proxy">
+      <geom group="3" rgba="0.15 0.75 0.25 0.20"/>
+    </default>
+  </default>
+
+  <asset>
+    <mesh name="body_mesh" file="body.stl"/>
+    <mesh name="left_leg_1_mesh" file="left_leg_1.stl"/>
+    <mesh name="left_leg_2_mesh" file="left_leg_2.stl"/>
+    <mesh name="left_leg_3_1_mesh" file="left_leg_3_1.stl"/>
+    <mesh name="left_leg_3_2_mesh" file="left_leg_3_2.stl"/>
+    <mesh name="left_leg_3_3_mesh" file="left_leg_3_3.stl"/>
+    <mesh name="right_leg_1_mesh" file="right_leg_1.stl"/>
+    <mesh name="right_leg_2_mesh" file="right_leg_2.stl"/>
+    <mesh name="right_leg_3_1_mesh" file="right_leg_3_1.stl"/>
+    <mesh name="right_leg_3_2_mesh" file="right_leg_3_2.stl"/>
+    <mesh name="right_leg_3_3_mesh" file="right_leg_3_3.stl"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="6 6 0.1" pos="0 0 0" rgba="0.92 0.92 0.92 1"/>
+    <light name="sun" pos="0 0 3" dir="0 0 -1" directional="true"/>
+    <camera name="track" mode="trackcom" pos="2.0 -2.8 1.4" xyaxes="0.81 0.59 0  -0.22 0.30 0.93"/>
+
+    <body name="torso" pos="0.000500 -0.052700 0.798700">
+      <freejoint/>
+      <inertial pos="0.000000 0.032700 -0.268700" mass="2.600000" diaginertia="0.074286 0.061905 0.049524"/>
+      <geom class="visual_mesh" name="body_visual" mesh="body_mesh" pos="-0.000500 0.052700 -0.798700" rgba="0.30 0.47 0.72 1"/>
+      <geom class="collision_proxy" name="torso_collision" type="box" size="0.105 0.060 0.175" pos="0.000 -0.040 -0.205"/>
+
+      <body name="left_leg_1" pos="-0.152000 0.055700 -0.010700">
+        <inertial pos="0.000000 0.003000 -0.145000" mass="1.000000" diaginertia="0.009417 0.009417 0.000200"/>
+        <joint name="left_hip" type="hinge" axis="1 0 0" range="-45 45"/>
+        <geom class="visual_mesh" name="left_leg_1_visual" mesh="left_leg_1_mesh" pos="0.151500 -0.003000 -0.788000" rgba="0.83 0.45 0.20 1"/>
+        <geom class="collision_proxy" name="left_leg_1_collision" type="capsule" fromto="0 0 0  0 0 -0.290" size="0.038"/>
+
+        <body name="left_leg_2" pos="-0.053000 0.006000 -0.290000">
+          <inertial pos="0.000000 0.022000 -0.063000" mass="0.850000" diaginertia="0.004614 0.004290 0.000154"/>
+          <joint name="left_knee" type="hinge" axis="1 0 0" range="-90 20"/>
+          <geom class="visual_mesh" name="left_leg_2_visual" mesh="left_leg_2_mesh" pos="0.204500 -0.009000 -0.498000" rgba="0.24 0.63 0.56 1"/>
+          <geom class="collision_proxy" name="left_leg_2_collision" type="capsule" fromto="0 0 0  0 0 -0.130" size="0.032"/>
+
+          <body name="left_leg_3" pos="-0.009000 0.044000 -0.126000">
+            <inertial pos="0.019000 -0.014000 -0.112000" mass="0.650000" diaginertia="0.003813 0.003120 0.001170"/>
+            <joint name="left_ankle" type="hinge" axis="1 0 0" range="-35 35"/>
+            <geom class="visual_mesh" name="left_leg_3_1_visual" mesh="left_leg_3_1_mesh" pos="0.213500 -0.053000 -0.372000" rgba="0.55 0.41 0.73 1"/>
+            <geom class="collision_mesh" name="left_leg_3_1_collision" mesh="left_leg_3_1_mesh" pos="0.213500 -0.053000 -0.372000" friction="2.0 0.2 0.05"/>
+
+            <body name="left_leg_3_2" pos="-0.029069 -0.184883 -0.282076">
+              <inertial pos="0.040000 0.010000 -0.020000" mass="0.600000" diaginertia="0.001575 0.001575 0.000825"/>
+              <joint name="left_leg_3_2_joint" type="hinge" axis="1 0 0" range="-25 25" damping="0.8" armature="0.005"/>
+              <geom class="visual_mesh" name="left_leg_3_2_visual" mesh="left_leg_3_2_mesh" pos="0.242569 0.131883 -0.089924" rgba="0.70 0.26 0.26 1"/>
+              <geom class="collision_mesh" name="left_leg_3_2_collision" mesh="left_leg_3_2_mesh" pos="0.242569 0.131883 -0.089924" friction="2.0 0.2 0.05"/>
+            </body>
+
+            <body name="left_leg_3_3" pos="-0.019689 0.011986 -0.289025">
+              <inertial pos="0.040000 -0.010000 -0.020000" mass="0.600000" diaginertia="0.001575 0.001575 0.000825"/>
+              <joint name="left_leg_3_3_joint" type="hinge" axis="1 0 0" range="-25 25" damping="0.8" armature="0.005"/>
+              <geom class="visual_mesh" name="left_leg_3_3_visual" mesh="left_leg_3_3_mesh" pos="0.233189 -0.064986 -0.082975" rgba="0.70 0.26 0.26 1"/>
+              <geom class="collision_mesh" name="left_leg_3_3_collision" mesh="left_leg_3_3_mesh" pos="0.233189 -0.064986 -0.082975" friction="2.0 0.2 0.05"/>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <body name="right_leg_1" pos="0.152000 0.055700 -0.010700">
+        <inertial pos="0.000000 0.003000 -0.145000" mass="1.000000" diaginertia="0.009417 0.009417 0.000200"/>
+        <joint name="right_hip" type="hinge" axis="1 0 0" range="-45 45"/>
+        <geom class="visual_mesh" name="right_leg_1_visual" mesh="right_leg_1_mesh" pos="-0.151500 -0.003000 -0.788000" rgba="0.83 0.45 0.20 1"/>
+        <geom class="collision_proxy" name="right_leg_1_collision" type="capsule" fromto="0 0 0  0 0 -0.290" size="0.038"/>
+
+        <body name="right_leg_2" pos="0.053000 0.006000 -0.290000">
+          <inertial pos="0.000000 0.022000 -0.063000" mass="0.850000" diaginertia="0.004614 0.004290 0.000154"/>
+          <joint name="right_knee" type="hinge" axis="1 0 0" range="-90 20"/>
+          <geom class="visual_mesh" name="right_leg_2_visual" mesh="right_leg_2_mesh" pos="-0.204500 -0.009000 -0.498000" rgba="0.24 0.63 0.56 1"/>
+          <geom class="collision_proxy" name="right_leg_2_collision" type="capsule" fromto="0 0 0  0 0 -0.130" size="0.032"/>
+
+          <body name="right_leg_3" pos="0.009000 0.044000 -0.126000">
+            <inertial pos="-0.019000 -0.014000 -0.112000" mass="0.650000" diaginertia="0.003813 0.003120 0.001170"/>
+            <joint name="right_ankle" type="hinge" axis="1 0 0" range="-35 35"/>
+            <geom class="visual_mesh" name="right_leg_3_1_visual" mesh="right_leg_3_1_mesh" pos="-0.213500 -0.053000 -0.372000" rgba="0.55 0.41 0.73 1"/>
+            <geom class="collision_mesh" name="right_leg_3_1_collision" mesh="right_leg_3_1_mesh" pos="-0.213500 -0.053000 -0.372000" friction="2.0 0.2 0.05"/>
+
+            <body name="right_leg_3_2" pos="0.029069 -0.184883 -0.282076">
+              <inertial pos="-0.040000 0.010000 -0.020000" mass="0.600000" diaginertia="0.001575 0.001575 0.000825"/>
+              <joint name="right_leg_3_2_joint" type="hinge" axis="1 0 0" range="-25 25" damping="0.8" armature="0.005"/>
+              <geom class="visual_mesh" name="right_leg_3_2_visual" mesh="right_leg_3_2_mesh" pos="-0.242569 0.131883 -0.089924" rgba="0.70 0.26 0.26 1"/>
+              <geom class="collision_mesh" name="right_leg_3_2_collision" mesh="right_leg_3_2_mesh" pos="-0.242569 0.131883 -0.089924" friction="2.0 0.2 0.05"/>
+            </body>
+
+            <body name="right_leg_3_3" pos="0.019689 0.011986 -0.289025">
+              <inertial pos="-0.040000 -0.010000 -0.020000" mass="0.600000" diaginertia="0.001575 0.001575 0.000825"/>
+              <joint name="right_leg_3_3_joint" type="hinge" axis="1 0 0" range="-25 25" damping="0.8" armature="0.005"/>
+              <geom class="visual_mesh" name="right_leg_3_3_visual" mesh="right_leg_3_3_mesh" pos="-0.233189 -0.064986 -0.082975" rgba="0.70 0.26 0.26 1"/>
+              <geom class="collision_mesh" name="right_leg_3_3_collision" mesh="right_leg_3_3_mesh" pos="-0.233189 -0.064986 -0.082975" friction="2.0 0.2 0.05"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <contact>
+    <exclude body1="torso" body2="left_leg_1"/>
+    <exclude body1="torso" body2="right_leg_1"/>
+    <exclude body1="left_leg_1" body2="left_leg_2"/>
+    <exclude body1="left_leg_2" body2="left_leg_3"/>
+    <exclude body1="left_leg_3" body2="left_leg_3_2"/>
+    <exclude body1="left_leg_3" body2="left_leg_3_3"/>
+    <exclude body1="left_leg_3_2" body2="left_leg_3_3"/>
+    <exclude body1="right_leg_1" body2="right_leg_2"/>
+    <exclude body1="right_leg_2" body2="right_leg_3"/>
+    <exclude body1="right_leg_3" body2="right_leg_3_2"/>
+    <exclude body1="right_leg_3" body2="right_leg_3_3"/>
+    <exclude body1="right_leg_3_2" body2="right_leg_3_3"/>
+  </contact>
+
+  <actuator>
+    <!-- 10-action order used by the trainer -->
+    <motor name="left_hip_torque" joint="left_hip" ctrlrange="-18 18"/>
+    <motor name="right_hip_torque" joint="right_hip" ctrlrange="-18 18"/>
+    <motor name="left_knee_torque" joint="left_knee" ctrlrange="-18 18"/>
+    <motor name="right_knee_torque" joint="right_knee" ctrlrange="-18 18"/>
+    <motor name="left_ankle_torque" joint="left_ankle" ctrlrange="-14 14"/>
+    <motor name="right_ankle_torque" joint="right_ankle" ctrlrange="-14 14"/>
+    <motor name="left_leg_3_2_torque" joint="left_leg_3_2_joint" ctrlrange="-10 10"/>
+    <motor name="left_leg_3_3_torque" joint="left_leg_3_3_joint" ctrlrange="-10 10"/>
+    <motor name="right_leg_3_2_torque" joint="right_leg_3_2_joint" ctrlrange="-10 10"/>
+    <motor name="right_leg_3_3_torque" joint="right_leg_3_3_joint" ctrlrange="-10 10"/>
+  </actuator>
+</mujoco>
